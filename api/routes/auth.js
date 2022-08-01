@@ -1,13 +1,29 @@
 const express = require("express");
+const { check } = require("express-validator")
 const { createUser,
         userLogin, 
         renewToken
     } = require("../controllers/auth");
 const router = express.Router();
 
-router.post("/new", createUser )
+router.post(
+    "/new", 
+    //middlewares
+    [
+        check("name", "The name is required").not().isEmpty(),
+        check("password", "The password is required").isLength({min:6}),
+        check("email", "The email is required").isEmail()
+    ], 
+    createUser )
 
-router.post("/", userLogin)
+router.post(
+    "/", 
+    //middlewares
+    [
+        check("password", "The password is required").isLength({min:6}),
+        check("email", "The email is required").isEmail()
+    ], 
+    userLogin)
 
 router.get("/renew", renewToken)
 

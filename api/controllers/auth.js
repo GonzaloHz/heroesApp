@@ -1,13 +1,22 @@
 const express = require("express")
+const { validationResult } = require("express-validator")
 
 const createUser = (req, res)=>{
 
     try{
     
-    if(req.body.name.length<5){
+    // if(req.body.name.length<5){
+    //     return res.status(400).json({
+    //         ok: false,
+    //         msg:"The name is not valid"
+    //     })
+    // }
+    //Error with expressValidator
+    const error = validationResult(req);
+    if(!error.isEmpty()){
         return res.status(400).json({
             ok: false,
-            msg:"The name is not valid"
+            errors: error.mapped()
         })
     }
 
@@ -25,6 +34,14 @@ const createUser = (req, res)=>{
 const userLogin = (req, res)=>{
     
     try{
+        //Error with expressValidator
+        const error = validationResult(req);
+        if(!error.isEmpty()){
+            return res.status(400).json({
+                ok: false,
+                errors: error.mapped()
+            })
+    }
         const { email, password } =req.body;
 
         res.json({
