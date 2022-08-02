@@ -4,6 +4,8 @@ const { createUser,
         userLogin, 
         renewToken
     } = require("../controllers/auth");
+const { fieldsValidate } = require("../middlewares/fieldsValidate");
+
 const router = express.Router();
 
 router.post(
@@ -12,7 +14,8 @@ router.post(
     [
         check("name", "The name is required").not().isEmpty(),
         check("password", "The password is required").isLength({min:6}),
-        check("email", "The email is required").isEmail()
+        check("email", "The email is required").isEmail(),
+        fieldsValidate
     ], 
     createUser )
 
@@ -21,7 +24,8 @@ router.post(
     //middlewares
     [
         check("password", "The password is required").isLength({min:6}),
-        check("email", "The email is required").isEmail()
+        check("email", "The email is required").isEmail(),
+        fieldsValidate
     ], 
     userLogin)
 
