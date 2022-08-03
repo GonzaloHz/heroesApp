@@ -1,15 +1,14 @@
 const express = require("express")
 
-const createUser = (req, res)=>{
+const User = require("../models/User")
 
+const createUser = async(req, res)=>{
+
+    
     try{
     
-    // if(req.body.name.length<5){
-    //     return res.status(400).json({
-    //         ok: false,
-    //         msg:"The name is not valid"
-    //     })
-    // }
+    const user = new User( req.body);
+    await user.save();
 
     res.json({
         msg: "register",
@@ -19,6 +18,10 @@ const createUser = (req, res)=>{
     })
     }catch(error){
         console.log(error)
+        return res.status(500).json({
+            ok:false,
+            msg:"Check the characters"
+        })
     }
 }
 
